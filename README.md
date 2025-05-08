@@ -12,6 +12,8 @@ Real-time hot-swapping of graphical modules without restarting the engine,
 Uniform GPU scheduling via vendor-provided micro-drivers,
 Consolidated AI/voice/modding/network support across games,
 And critically, modular updates and rollback at the runtime level, not per-game.
+![image](https://github.com/user-attachments/assets/3c0428c8-459a-4098-b63e-bd6c6fc074c1)
+
 
 | Feature / Layer                      | Traditional Game Engines (Unity, Unreal, Godot) | GOSR (Game Operating System Runtime)                               |
 | ------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------------ |
