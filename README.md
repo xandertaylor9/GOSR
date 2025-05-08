@@ -2,6 +2,17 @@
 
 ## Overview
 GOSR is a modular, system-level runtime designed to revolutionize how games run across all platforms. It abstracts away hardware and OS fragmentation, enabling consistent, fast, and secure gameplay with dynamic hot-swapping, peer-to-peer networking, real-time updates, and AI-native capabilities.
+
+GOSR is not a game engine — it's a game runtime platform. Unlike engines such as Unity or Unreal, which provide tools for asset creation, scripting, physics, and rendering pipelines within individual games, GOSR functions more like a shared operating layer beneath the engine. It provides standardized services such as graphics abstraction, hot-swappable module loading, P2P networking, voice and stream handling, security/cert validation, and moderation infrastructure. Game engines (or even raw codebases) plug into GOSR and build on top of it. Think of it like the JVM for games or like SteamOS but deeply integrated across runtime, networking, and distribution. It doesn't replace engines — it empowers them by offloading low-level concerns and providing a consistent, secure, cross-platform runtime environment.
+
+many modern engines like Unity, Unreal, and Godot already provide abstraction layers over platform-specific graphics APIs. However, GOSR's approach differs in scope, placement, and purpose:
+Traditional engines abstract at the engine level, meaning each game must embed its own runtime, manage updates per title, and reimplement optimization strategies independently. GOSR, on the other hand, aims to elevate that abstraction to the system layer — a shared runtime across all games. This allows:
+Global optimizations (e.g., batching across modules or games),
+Real-time hot-swapping of graphical modules without restarting the engine,
+Uniform GPU scheduling via vendor-provided micro-drivers,
+Consolidated AI/voice/modding/network support across games,
+And critically, modular updates and rollback at the runtime level, not per-game.
+
 | Feature / Layer                      | Traditional Game Engines (Unity, Unreal, Godot) | GOSR (Game Operating System Runtime)                               |
 | ------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------------ |
 | 🎮 Runtime Deployment                | Per game (embedded engine/runtime)              | Shared system runtime used by all games                            |
