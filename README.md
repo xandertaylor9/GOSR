@@ -2,6 +2,22 @@
 
 ## Overview
 GOSR is a modular, system-level runtime designed to revolutionize how games run across all platforms. It abstracts away hardware and OS fragmentation, enabling consistent, fast, and secure gameplay with dynamic hot-swapping, peer-to-peer networking, real-time updates, and AI-native capabilities.
+| Feature / Layer                      | Traditional Game Engines (Unity, Unreal, Godot) | GOSR (Game Operating System Runtime)                               |
+| ------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------------ |
+| 🎮 Runtime Deployment                | Per game (embedded engine/runtime)              | Shared system runtime used by all games                            |
+| 🧱 Graphics Abstraction              | Yes, via engine APIs mapped to DX12/Vulkan/etc  | Yes, but unified across all games with vendor micro-drivers        |
+| 🔁 Module Hot-Swapping               | Rare, typically requires restart                | Built-in hot-swapping at system level, safe rollback supported     |
+| 🧠 AI Integration                    | Hand-rolled by developers or via plugins        | Built-in LLM/NPC/MapGen framework, optimized for low latency       |
+| 🌐 Networking                        | Custom per game, server/client model dominant   | Sharded P2P mesh networking handled by runtime                     |
+| 🧰 Modding                           | Game-specific; security handled inconsistently  | Sandbox enforced by GOSR, access controls built-in                 |
+| 🎙 Voice & Streaming                 | External SDKs (e.g. Vivox, OBS)                 | Native, encrypted voice & real-time stream capture baked in        |
+| 🛡 DRM / Entitlements                | Game-specific, vulnerable to patching/modding   | Central certificate & secure module store with rollback/revocation |
+| 🧩 Developer Burden                  | Full engine customization and feature ownership | Just build content; GOSR handles platform, optimization, updates   |
+| 💻 Console/Platform NDA Restrictions | Engine often tailored to console SDKs           | GOSR requires vendor micro-driver cooperation, abstracted layers   |
+| 🔄 Update Strategy                   | Game-level patching                             | Background streaming module updates with dependency awareness      |
+| 🧠 Resource Sharing                  | Each game schedules separately                  | Global GPU/resource coordination across all running modules        |
+| 🎯 Target Audience                   | Individual games or studios                     | Entire gaming ecosystem; engine-agnostic infrastructure            |
+
 
 ## Goals
 - Enable universal compatibility across CPU architectures (ARM, x86, etc.)
