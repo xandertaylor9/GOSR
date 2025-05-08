@@ -29,14 +29,35 @@ GOSR is a modular, system-level runtime designed to revolutionize how games run 
 - Dependency graph ensures all submodules are compatible before switching
 
 ### 🎮 Graphics Abstraction Layer
-![image](https://github.com/user-attachments/assets/a61a0671-b9e2-4044-9d42-815a2d2cb48b)
+![image](https://github.com/user-attachments/assets/fe6f153f-e30f-4ca3-a3c6-2596dc5834bd)
 
-- GOSR issues rendering commands in a unified format
-- Translates dynamically to DirectX, Metal, Vulkan, WebGPU, etc.
-- GPU vendor driver handles optimization layer
-- Avoids double abstraction by batching GPU commands per frame
-- GPU drivers only responsible for IRenderer tuning layer
-- Enables future-proof support for new platforms
+
+#### Design
+The Graphics Abstraction Layer (GAL) serves as a translation and orchestration layer between game logic and platform-specific GPU APIs. It provides a unified rendering API for all games, eliminating the need for developers to write platform-specific rendering code.
+
+#### Workflow
+1. Games call the GOSR unified graphics API.
+2. GAL converts calls into platform-specific API instructions (DirectX12, Vulkan, Metal, WebGPU).
+3. Commands are batched and queued for optimal GPU submission.
+4. GPU vendors provide a minimal tuning driver responsible only for translating GAL ops to hardware-specific instructions.
+
+#### Responsibilities
+| Stakeholder | Responsibility |
+|------------|----------------|
+| GOSR Team | Design and maintain IRenderer interface and abstraction logic |
+| Game Developer | Write against GOSR Graphics API only |
+| GPU Vendor | Provide micro-drivers to translate GAL ops to native GPU commands |
+| OS Vendor | Expose minimal GPU resources and scheduling APIs |
+
+#### Features
+- Zero-copy render pipeline with frame batching
+- Built-in support for streaming texture formats
+- Temporal upscaling and DLSS-like hooks
+- Internal render graph optimizer
+
+#### Diagram: Frame Render Lifecycle
+![image](https://github.com/user-attachments/assets/6e9a62d2-c1e4-4a3e-901a-24d37a50dafb)
+
 
 ### 🌐 P2P Networking & Sharding
 ![image](https://github.com/user-attachments/assets/ffd17cd8-c4bc-4f3c-91ab-a939a874c157)
