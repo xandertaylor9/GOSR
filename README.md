@@ -12,38 +12,14 @@ GOSR is a modular, system-level runtime designed to revolutionize how games run 
 - Abstract rendering, input, voice, and streaming away from native APIs
 
 ## Architecture
-```plantuml
-@startuml
-package GOSR {
-  [Core Runtime] --> [Graphics Abstraction Layer]
-  [Core Runtime] --> [Module Loader + Hot Swapper]
-  [Core Runtime] --> [P2P Networking Shard Manager]
-  [Core Runtime] --> [Security & Cert Validation]
-  [Core Runtime] --> [AI Integration Framework]
-  [Core Runtime] --> [Modding Sandbox]
-  [Core Runtime] --> [Voice + Stream Capture Engine]
-  [Core Runtime] --> [Moderation Mesh]
-}
-@enduml
-```
+![image](https://github.com/user-attachments/assets/f2b7135c-b507-4549-9959-95d1de735ea9)
+
 
 ## Key Components
 
 ### 🧠 Module Loader + Hot Swapper
-```plantuml
-@startuml
-actor Player
-Player -> GOSR: Request update
-GOSR -> Cloud: Download .gmod
-Cloud -> GOSR: Send updated module
-GOSR -> GOSR: Verify signature and dependencies
-alt All Valid
-  GOSR -> Runtime: Swap module in real-time
-else Validation Fails
-  GOSR -> Runtime: Defer update
-end
-@enduml
-```
+![image](https://github.com/user-attachments/assets/0e65b612-eaaf-40fb-88fc-8e903a5a7aed)
+
 - Game content split into GOSR Modules (.gmod)
 - Versioned and dependency tracked
 - Hot-swapped at runtime, rollback safe
@@ -53,15 +29,8 @@ end
 - Dependency graph ensures all submodules are compatible before switching
 
 ### 🎮 Graphics Abstraction Layer
-```plantuml
-@startuml
-interface IRenderer
-IRenderer <|.. DX12Adapter
-IRenderer <|.. MetalAdapter
-IRenderer <|.. VulkanAdapter
-GOSR -> IRenderer: Issue draw commands
-@enduml
-```
+![image](https://github.com/user-attachments/assets/a61a0671-b9e2-4044-9d42-815a2d2cb48b)
+
 - GOSR issues rendering commands in a unified format
 - Translates dynamically to DirectX, Metal, Vulkan, WebGPU, etc.
 - GPU vendor driver handles optimization layer
@@ -70,18 +39,8 @@ GOSR -> IRenderer: Issue draw commands
 - Enables future-proof support for new platforms
 
 ### 🌐 P2P Networking & Sharding
-```plantuml
-@startuml
-node "Game World" {
-  [Shard A] --> [Shard B]
-  [Shard A] --> [Shard C]
-  [Shard D] --> [Shard A]
-}
-[Shard Manager] --> [Shard A]
-[Shard Manager] --> [Shard B]
-[Shard Manager] --> [Shard C]
-@enduml
-```
+![image](https://github.com/user-attachments/assets/ffd17cd8-c4bc-4f3c-91ab-a939a874c157)
+
 - World divided into micro-shards (regional cells)
 - Only adjacent shards communicate directly
 - Shards replicate across peers based on reliability and latency
@@ -91,15 +50,8 @@ node "Game World" {
 - Bandwidth managed via predictive throttling
 
 ### 🔐 Security & Certificate Layer
-```plantuml
-@startuml
-actor Player
-Player -> GameModule: Request item
-GameModule -> CertStore: Validate user cert
-CertStore --> GameModule: Response
-GameModule -> Runtime: Decrypt asset access
-@enduml
-```
+![image](https://github.com/user-attachments/assets/d141b435-c8f5-4526-a750-27dd2547f15a)
+
 - All GOSR modules cryptographically signed
 - Signed content linked to developer identity
 - Purchase receipts and entitlement certs stored per-user
@@ -108,13 +60,8 @@ GameModule -> Runtime: Decrypt asset access
 - Certificates can be revoked in case of compromise
 
 ### 🧬 AI Runtime Integration
-```plantuml
-@startuml
-GameModule -> AICore: Generate response
-AICore --> GameModule: Output action/dialog
-GameModule -> Renderer: Display result
-@enduml
-```
+![image](https://github.com/user-attachments/assets/88db914e-f6bf-49bd-8340-6f5f2590fd66)
+
 - Built-in hooks for:
   - LLM-powered NPC dialog
   - AI-assisted map generation
@@ -125,13 +72,8 @@ GameModule -> Renderer: Display result
 - Real-time prompt tuning based on user behavior
 
 ### 🎙 Voice + Stream Engine
-```plantuml
-@startuml
-Player -> VoiceEngine: Speak
-VoiceEngine --> Mesh: Transmit (proximity-based)
-Mesh --> NearbyPlayers: Playback voice
-@enduml
-```
+![image](https://github.com/user-attachments/assets/a2be5b08-f7d0-4dfc-849a-5066b7b4f4d6)
+
 - Captures render frames before GPU final output
 - Transmits compressed H.264/AV1 to Twitch/YouTube or disk
 - P2P mesh voice relaying (proximity-based)
@@ -139,13 +81,8 @@ Mesh --> NearbyPlayers: Playback voice
 - Developer opt-in SDK for audio filters and watermarking
 
 ### 🧵 Modding Sandbox
-```plantuml
-@startuml
-Mod -> ModAPI: Call safe functions
-ModAPI --> Mod: Response
-Runtime -[#red]> Mod: Block unsafe access
-@enduml
-```
+![image](https://github.com/user-attachments/assets/fecac629-230f-4147-9069-22c8092ce3d9)
+
 - Developer-defined mod API surface
 - Mods run in sandboxed thread-space
 - Mods verified and versioned with rollback support
@@ -154,13 +91,8 @@ Runtime -[#red]> Mod: Block unsafe access
 - Mods hot-swappable at runtime, like .gmods
 
 ### 👮 Moderation Mesh
-```plantuml
-@startuml
-User -> MeshNode: Report spam
-MeshNode --> Community: Raise flag
-Community -> MeshNode: Confirm/moderate
-@enduml
-```
+![image](https://github.com/user-attachments/assets/036728e4-c6d6-43b1-8600-3b9b50bda795)
+
 - Moderation is decentralized
 - Moderation power is trust-weighted based on past actions
 - Every game can define its moderation policy schema
@@ -168,20 +100,8 @@ Community -> MeshNode: Confirm/moderate
 - Developers not liable for user-led moderation under fair-play clause
 
 ## Update Flow
-```plantuml
-@startuml
-start
-:Download new .gmod file;
-if (Dependency Check) then (OK)
-  :Verify Signature;
-  :Quarantine Old Version;
-  :Switch to New .gmod;
-else (Fail)
-  :Retain old module;
-endif
-stop
-@enduml
-```
+![image](https://github.com/user-attachments/assets/755fa6b3-f76a-4645-855d-bab155226dd8)
+
 
 ## Next Steps
 - Implement GOSR simulation kernel in Rust
